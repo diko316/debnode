@@ -1,44 +1,49 @@
 #!/bin/sh
 
 WATCH=$(which watch)
-PID=${LOG_FILES}/run.pid
+SOURCE_PID=${LOG_FILES}/source_change.pid
+WATCH_PID=${LOG_FILES}/watch-source.pid
+TAIL_LOG=$1
 
-if [ -f "${PID}" ]; then
-    PROCESS_ID=$(cat ${PID})
+# kill source change pid
+if [ -f "${SOURCE_PID}" ]; then
+    PROCESS_ID=$(cat ${SOURCE_PID})
     if ! kill "${PROCESS_ID}"; then
         kill -9 "${PROCESS_ID}" || exit 1
     fi
-    rm "${PID}"
+    rm "${SOURCE_PID}"
 fi
 
-PID=${LOG_FILES}/watch-source.pid
-
-if [ -f "${PID}" ]; then
-    PROCESS_ID=$(cat ${PID})
+# kill watch pid
+if [ -f "${WATCH_PID}" ]; then
+    PROCESS_ID=$(cat ${WATCH_PID})
     if ! kill "${PROCESS_ID}"; then
         kill -9 "${PROCESS_ID}" || exit 1
     fi
-    rm "${PID}"
+    rm "${WATCH_PID}"
 fi
 
 if [ -d "${APP_SOURCE}" ]; then
-    echo "Running watch on source file change..."
+    echo "Running watch on source file change... ${APP_SOURCE}"
     setsid ${WATCH} "${APP_TOOLS}/on-source-change.sh" "${APP_SOURCE}" > "${LOG_FILES}/watch.log" 2>&1 < /dev/null &
-    echo $! > "${PID}"
+    echo $! > "${SOURCE_PID}"
     
 fi
 
 
-if [ -d "${PROJECT_ROOT}" ]; then
-    echo "Running Watch on app runner..."
-    #setsid ${WATCH} "${APP_TOOLS}/on-project-change.sh" "${PROJECT_ROOT}" > "${LOG_FILES}/change.log" 2>&1 < /dev/null &
-    
-    "${APP_TOOLS}/on-project-change.sh" &
-    ${WATCH} "${APP_TOOLS}/on-project-change.sh" "${PROJECT_ROOT}"
-    
-else
-    "${APP_TOOLS}/on-project-change.sh"
+if [ ! -d "${PROJECT_ROOT}" ]; then
+    mkdir -p "${PROJECT_ROOT}"
 fi
+    
+echo "Running Watch on app runner... ${PROJECT_ROOT}"
+setsid ${WATCH} "${APP_TOOLS}/on-project-change.sh" "${PROJECT_ROOT}" > "${LOG_FILES}/change.log" 2>&1 < /dev/null &
+echo $! > "${WATCH_PID}"
 
+# sync to simulate project change
+"${APP_TOOLS}/on-source-change.sh"
+    
 
+if [ "${TAIL_LOG}" = "-t" ]; then
+    tail -f "${LOG_FILES}/change.log"
+fi
 

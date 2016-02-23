@@ -5,8 +5,11 @@ FROM diko316/debnode:basic
 
 ENV PROJECT_ROOT /opt/app
 ENV APP_TOOLS /opt/app-tools
-ENV APP_SOURCE /opt/app-source
 ENV LOG_FILES /opt/tool-logs
+
+# mount source files when running docker run -v source_dir:/opt/app-source
+#   to allow automatic sync
+ENV APP_SOURCE /opt/app-source
 
 # install watcher
 RUN npm install -g watch
@@ -28,7 +31,7 @@ RUN mkdir -p $APP_SOURCE
 RUN mkdir -p $PROJECT_ROOT
 
 # run watcher daemon in background
-CMD watcher
+CMD watcher -t
 
 
 

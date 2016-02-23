@@ -1,11 +1,15 @@
 #!/bin/sh
 
+echo "* There are changes in ${APP_SOURCE}"
 if ! which rsync > /dev/null; then
-    echo "rsync is not installed" >&2
+    echo "! rsync is not installed"
     exit 1
 fi
 
-
-rsync -rpDzh --exclude=".git*" --exclude="*node_modules/*" "${APP_SOURCE}" "${PROJECT_ROOT}/"
-
+if [ -d "${PROJECT_ROOT}" ]; then
+    echo "* Sync changes ${APP_SOURCE} to ${PROJECT_ROOT}"
+    rsync -rpDzh --exclude=".git*" --exclude="*node_modules/*" "${APP_SOURCE}/" "${PROJECT_ROOT}"
+else
+    echo "! ${PROJECT_ROOT} do not exist or not a directory"
+fi
 exit $?
