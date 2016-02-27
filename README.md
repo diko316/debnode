@@ -26,10 +26,10 @@ This is the final image that is aware of source files and that may sync to proje
 2. **Project awareness**
 	* Project Watcher will monitor modified files in */opt/app* which was synchronized by Source Watcher. If there are modified files found, runner script will be executed.
 
-	* Runner script is run by default at */opt/app/bin/run.sh*. You can also modify script runner file path by setting *APP_RUNNER* environment variable when calling docker run like the code below:
+	* Runner script is run by default at */opt/app/sample-runner.sh*. You can also modify script runner file path by setting *APP_RUNNER* environment variable when calling docker run like the code below:
 
 	```
-docker run -e 'APP_RUNNER=/opt/app/bin/custom.sh' -v  /host_directory:/opt/app-source debnode_image
+docker run -e 'APP_RUNNER=/opt/tools/bin/custom_runner.sh' -v  /host_directory:/opt/app-source debnode_image
 	```
 
 	Runner scripts should be an executable file, or else it will not be detected as runner script in Project Watcher.

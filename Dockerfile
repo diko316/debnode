@@ -7,6 +7,9 @@ ENV PROJECT_ROOT /opt/app
 ENV APP_TOOLS /opt/tools
 ENV LOG_FILES /opt/tool-logs
 
+ENV APP_SOURCE /opt/app-source
+ENV APP_RUNNER /opt/app/
+
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
@@ -19,10 +22,6 @@ RUN apt-get update && apt-get install -y \
 # Install NodeSource Node.js 4.x LTS Argon repo
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
     apt-get install -y nodejs
-
-# mount source files when running docker run -v source_dir:/opt/app-source
-#   to allow automatic sync
-ENV APP_SOURCE /opt/app-source
 
 # add tools
 RUN mkdir -p $APP_TOOLS
