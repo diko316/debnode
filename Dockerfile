@@ -18,11 +18,13 @@ RUN apt-get update && apt-get install -y \
                                         build-essential \
                                         curl \
                                         inotify-tools \
-                                        rsync
+                                        rsync && \
+                                        rm -rf /var/lib/apt/lists/*
 
 # Install NodeSource Node.js 4.x LTS Argon repo
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
-    apt-get install -y nodejs
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install latest npm
 RUN npm install npm@latest -g
