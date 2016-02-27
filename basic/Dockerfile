@@ -3,8 +3,13 @@
 #####################################
 FROM debian:latest
 
+# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
+RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
-RUN apt-get update && apt-get install -y nodejs npm
+# Install curl required for installing Nodejs Argon Repo
+RUN apt-get update && apt-get install -y curl
 
-# fix nodejs/node command
-RUN ln -s $(which nodejs) /usr/bin/node 
+# Install NodeSource Node.js 4.x LTS Argon repo
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
+    apt-get install -y nodejs
+
