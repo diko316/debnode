@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install NodeSource Node.js 4.x LTS Argon repo
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y nodejs git && \
     rm -rf /var/lib/apt/lists/*
 
 # Install latest npm
