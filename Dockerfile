@@ -15,6 +15,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
 # Install requisites for installing Nodejs Argon Repo
 RUN apt-get update && apt-get install -y \
+                                        build-essential \
                                         curl \
                                         inotify-tools \
                                         rsync
