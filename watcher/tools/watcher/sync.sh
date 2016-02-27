@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "* There are changes in ${APP_SOURCE}"
+echo "* Sync files from ${APP_SOURCE} to ${PROJECT_ROOT}"
 if ! which rsync > /dev/null; then
     echo "! rsync is not installed"
     exit 1
