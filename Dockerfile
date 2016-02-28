@@ -8,6 +8,7 @@ ENV APP_TOOLS /opt/tools
 ENV LOG_FILES /opt/tool-logs
 
 ENV APP_SOURCE /opt/app-source
+ENV APP_PRERUNNER /opt/app/sample-prerunner.sh
 ENV APP_RUNNER /opt/app/sample-runner.sh
 ENV APP_OBSERVE $PROJECT_ROOT
 

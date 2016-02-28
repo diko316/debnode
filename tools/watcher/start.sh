@@ -31,8 +31,14 @@ if [ ! -r "${APP_OBSERVE}" ]; then
     exit 1
 fi
 
+## execute APP_RUNNER for the first time
+if [ -x "${APP_PRERUNNER}" ]; then
+    echo "* Found prerunner, running prerunner..."
+    ${APP_PRERUNNER}
+fi
+
 echo "* Watching: ${APP_OBSERVE}"
-${TOOLS_DIR}/watch.sh ${APP_OBSERVE} ${APP_RUNNER}
+${TOOLS_DIR}/watch.sh "${APP_OBSERVE}" "${APP_RUNNER}"
 
 exit 0
 
