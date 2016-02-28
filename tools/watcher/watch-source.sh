@@ -14,7 +14,7 @@ PIDFILE="${LOG_FILES}/watch-source.pid"
 #   and readable
 ##########################
 if [ ! -r "${SOURCE}" ]; then
-    echo "${SOURCE} do not exist or no read permission" >&2
+    echo "! ${SOURCE} do not exist or no read permission" >&2
     exit 1
 fi
 
@@ -24,7 +24,7 @@ fi
 #   and writable
 ##########################
 if [ ! -w "${TARGET}" ]; then
-    echo "${TARGET} do not exist or no write permission" >&2
+    echo "! ${TARGET} do not exist or no write permission" >&2
     exit 1
 fi
 
@@ -40,5 +40,13 @@ fi
 ##########################
 # watch source
 ##########################
+# try first if it succeeds
+if ! "${SYNC_ACTION}"; then
+    echo "! There errors running sync action" >&2
+    exit 1
+fi
+
+
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &
 echo $! > ${PIDFILE}
+
