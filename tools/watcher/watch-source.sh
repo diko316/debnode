@@ -46,7 +46,7 @@ fi
 #    exit 1
 #fi
 
-
+echo "Watching ${SOURCE}"
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &
 echo $! > ${PIDFILE}
 

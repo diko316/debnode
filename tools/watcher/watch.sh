@@ -20,37 +20,33 @@ trap kill_inotify 3
 trap kill_inotify 6
 trap kill_inotify 15
 
-kill_all() {
-    if [ "${APID}" ]; then
-        kill "${APID}"
-        APID=
-    fi
-    if [ "${PID}" ]; then
-        kill "${PID}"
-        PID=
-    fi
-}
-
 kill_inotify() {
-    kill_all
+    if [ "${APID}" ]; then
+        ls /proc | grep '^'${APID}'$' && kill ${APID}
+    fi
+    
+    if [ "${PID}" ]; then
+        ls /proc | grep '^'${PID}'$' && kill ${PID}
+    fi
     exit 0
 }
 
 while true; do
     if [ -x "${FILE}" ]; then
-        echo "Calling action!"
-        setsid ${ACTION} > /dev/null 2>&1 < /dev/null &
+
+        ${ACTION} &
         APID=$!
-        
-        echo "Monitoring file change"
+        ls /proc | grep '^'${APID}'$' || continue
+
         if [ -d "${FILE}" ]; then
             inotifywait -q -r -e close_write,modify,move,create,delete "${FILE}" &
         else
             inotifywait -q -e close_write,modify,move,create,delete "${FILE}" &
         fi
         PID=$!
-        wait
-        kill_all
+        wait $PID
+        ls /proc | grep '^'${APID}'$' && kill ${APID}
+        ls /proc | grep '^'${PID}'$' && kill ${PID}
         
     else
         break
