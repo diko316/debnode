@@ -15,6 +15,7 @@ ${TOOLS_DIR}/watch-source.sh
 ##########################################
 # use APP_RUNNER if found and executable
 ##########################################
+echo "* Running app runner: ${APP_RUNNER}"
 if [ ! -f "${APP_RUNNER}" ]; then
     echo "! Runner not found" >&2
     exit 1
@@ -30,7 +31,7 @@ if [ ! -r "${APP_OBSERVE}" ]; then
     exit 1
 fi
 
-
+echo "* Watching: ${APP_OBSERVE}"
 ${TOOLS_DIR}/watch.sh ${APP_OBSERVE} ${APP_RUNNER}
 
 exit 0
