@@ -19,10 +19,9 @@ RUN apt-get update && apt-get install -y \
                                         build-essential \
                                         curl \
                                         inotify-tools \
-                                        git \
                                         rsync && \
     curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y nodejs git && \
     rm -rf /var/lib/apt/lists/* && \
     npm install npm@latest -g -dd
 
