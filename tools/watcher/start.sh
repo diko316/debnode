@@ -2,6 +2,10 @@
 
 TOOLS_DIR=$(dirname $(readlink -m $0))
 
+##########################################
+# sync product root with source files
+##########################################
+${TOOLS_DIR}/sync.sh
 
 ##########################################
 # sync product root with when source files
