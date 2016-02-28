@@ -8,7 +8,8 @@ ENV APP_TOOLS /opt/tools
 ENV LOG_FILES /opt/tool-logs
 
 ENV APP_SOURCE /opt/app-source
-ENV APP_RUNNER /opt/app/
+ENV APP_RUNNER /opt/app/sample-runner.sh
+ENV APP_OBSERVE $PROJECT_ROOT
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
