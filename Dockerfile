@@ -23,7 +23,8 @@ RUN apt-get update && apt-get install -y \
                                         rsync && \
     curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
     apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    npm install npm@latest -g -ddd
 
 # Install NodeSource Node.js 4.x LTS Argon repo
 #RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
@@ -31,7 +32,7 @@ RUN apt-get update && apt-get install -y \
 #    rm -rf /var/lib/apt/lists/*
 
 # Install latest npm
-RUN npm install npm@latest -g -ddd
+#RUN npm install npm@latest -g -ddd
 
 # add tools
 RUN mkdir -p $APP_TOOLS
