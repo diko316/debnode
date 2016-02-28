@@ -41,10 +41,10 @@ fi
 # watch source
 ##########################
 # try first if it succeeds
-if ! "${SYNC_ACTION}"; then
-    echo "! There errors running sync action" >&2
-    exit 1
-fi
+#if ! "${SYNC_ACTION}"; then
+#    echo "! There errors running sync action" >&2
+#    exit 1
+#fi
 
 
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &

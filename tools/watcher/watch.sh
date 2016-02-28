@@ -2,7 +2,6 @@
 
 FILE=$1
 ACTION=$2
-PID=$!
 
 if ! which inotifywait > /dev/null; then
     echo "! inotify-tools is not installed" >&2
@@ -21,15 +20,28 @@ trap kill_inotify 3
 trap kill_inotify 6
 trap kill_inotify 15
 
-kill_inotify() {
+kill_all() {
+    if [ "${APID}" ]; then
+        kill "${APID}"
+        APID=
+    fi
     if [ "${PID}" ]; then
         kill "${PID}"
+        PID=
     fi
+}
+
+kill_inotify() {
+    kill_all
     exit 0
 }
 
 while true; do
     if [ -x "${FILE}" ]; then
+        
+        setsid ${ACTION} > /dev/null 2>&1 < /dev/null &
+        APID=$!
+        
         if [ -d "${FILE}" ]; then
             inotifywait -q -r -e close_write,modify,move,create,delete "${FILE}" &
         else
@@ -37,10 +49,7 @@ while true; do
         fi
         PID=$!
         wait
-        
-        if ! eval "${ACTION}"; then
-            exit 3
-        fi
+        kill_all
         
     else
         break
