@@ -24,15 +24,7 @@ RUN apt-get update && apt-get install -y \
     curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/* && \
-    npm install npm@latest -g -ddd
-
-# Install NodeSource Node.js 4.x LTS Argon repo
-#RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
-#    apt-get install -y nodejs git && \
-#    rm -rf /var/lib/apt/lists/*
-
-# Install latest npm
-#RUN npm install npm@latest -g -ddd
+    npm install npm@latest -g -dd
 
 # add tools
 RUN mkdir -p $APP_TOOLS
@@ -46,6 +38,6 @@ RUN mkdir -p $APP_SOURCE
 RUN mkdir -p $PROJECT_ROOT
 
 # run watcher daemon in background
-CMD /opt/tools/watcher/start.sh
+CMD $APP_TOOLS/watcher/start.sh
 
 
