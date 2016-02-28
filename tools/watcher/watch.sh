@@ -38,10 +38,11 @@ kill_inotify() {
 
 while true; do
     if [ -x "${FILE}" ]; then
-        
+        echo "Calling action!"
         setsid ${ACTION} > /dev/null 2>&1 < /dev/null &
         APID=$!
         
+        echo "Monitoring file change"
         if [ -d "${FILE}" ]; then
             inotifywait -q -r -e close_write,modify,move,create,delete "${FILE}" &
         else
