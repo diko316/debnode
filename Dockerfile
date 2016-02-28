@@ -28,7 +28,7 @@ RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
     rm -rf /var/lib/apt/lists/*
 
 # Install latest npm
-RUN npm install npm@latest -g
+RUN npm install npm@latest -g -ddd
 
 # add tools
 RUN mkdir -p $APP_TOOLS
