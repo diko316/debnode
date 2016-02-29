@@ -10,6 +10,8 @@ TOOLS_DIR=$(dirname $(readlink -m $0))
 #    is updated
 ##########################################
 ${TOOLS_DIR}/watch-source.sh
+echo "* Source files synced"
+ls ${PROJECT_ROOT}
 
 
 ##########################################
@@ -26,16 +28,19 @@ if [ ! -x "${APP_RUNNER}" ]; then
     exit 1
 fi
 
+echo "* valid runner script ${APP_RUNNER}"
+
 if [ ! -r "${APP_OBSERVE}" ]; then
     echo "! Unable to find observe path" >&2
     exit 1
 fi
+echo "* valid observe path ${APP_OBSERVE}"
 
 ## execute APP_RUNNER for the first time
-if [ -x "${APP_PRERUNNER}" ]; then
-    echo "* Found prerunner, running prerunner..."
-    ${APP_PRERUNNER}
-fi
+#if [ -x "${APP_PRERUNNER}" ]; then
+#    echo "* Found prerunner, running prerunner..."
+#    ${APP_PRERUNNER}
+#fi
 
 echo "* Watching: ${APP_OBSERVE}"
 ${TOOLS_DIR}/watch.sh "${APP_OBSERVE}" "${APP_RUNNER}"

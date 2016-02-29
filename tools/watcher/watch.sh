@@ -33,12 +33,11 @@ kill_inotify() {
 
 while true; do
     if [ -x "${FILE}" ]; then
-        echo "Calling file action"
         ${ACTION} &
         APID=$!
-        ls /proc | grep '^'${APID}'$' || continue
+        sleep 5
+        ls /proc | grep '^'${APID}'$' || exit 1
         
-        echo "Monitoring file"
         if [ -d "${FILE}" ]; then
             inotifywait -q -r -e close_write,modify,move,create,delete "${FILE}" &
         else

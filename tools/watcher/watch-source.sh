@@ -49,4 +49,10 @@ fi
 echo "Watching ${SOURCE}"
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &
 echo $! > ${PIDFILE}
+echo "Waiting for files to be partially synced"
+echo "Observing ${SOURCE} $!"
+while [ $(wc -L ${WATCHLOG} | cut -d' ' -f1) -lt 1 ]; do
+    echo "..."
+    sleep 1
+done
 
