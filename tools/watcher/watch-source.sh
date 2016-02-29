@@ -24,7 +24,7 @@ fi
 #   and writable
 ##########################
 if [ ! -w "${TARGET}" ]; then
-    echo "! ${TARGET} do not exist or no write permission" >&2
+    echo "*! ${TARGET} do not exist or no write permission" >&2
     exit 1
 fi
 
@@ -46,11 +46,11 @@ fi
 #    exit 1
 #fi
 
-echo "Watching ${SOURCE}"
+echo "* Watching ${SOURCE}"
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &
 echo $! > ${PIDFILE}
-echo "Waiting for files to be partially synced"
-echo "Observing ${SOURCE} $!"
+echo "* Waiting for files to be partially synced"
+echo "* Observing ${SOURCE} $!"
 while [ $(wc -L ${WATCHLOG} | cut -d' ' -f1) -lt 1 ]; do
     echo "..."
     sleep 1

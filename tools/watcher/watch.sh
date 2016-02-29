@@ -4,12 +4,12 @@ FILE=$1
 ACTION=$2
 
 if ! which inotifywait > /dev/null; then
-    echo "! inotify-tools is not installed" >&2
+    echo "*! inotify-tools is not installed" >&2
     exit 1
 fi
 
 if [ ! "$ACTION" ]; then
-    echo "! no action defined" >&2
+    echo "*! no action defined" >&2
     exit 1
 fi
 
