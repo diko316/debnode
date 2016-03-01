@@ -1,7 +1,8 @@
 #!/bin/sh
 
 FILE=$1
-ACTION=$2
+[ $# -ge 1 ] && shift 1
+ACTION="$*"
 
 if ! which inotifywait > /dev/null; then
     echo "*! inotify-tools is not installed" >&2
@@ -22,22 +23,28 @@ trap kill_inotify 15
 
 kill_inotify() {
     if [ "${APID}" ]; then
-        ls /proc | grep '^'${APID}'$' && kill ${APID}
+        echo "killing action pid ${APID}"
+        ls /proc | grep '^'${APID}'$' && kill ${APID} && APID=
     fi
     
     if [ "${PID}" ]; then
-        ls /proc | grep '^'${PID}'$' && kill ${PID}
+        echo "killing monitor pid ${PID}"
+        ls /proc | grep '^'${PID}'$' && kill ${PID} && PID=
     fi
+    echo "** End watcher..."
     exit 0
 }
+
+
+
+echo "** Running watcher..."
 
 while true; do
     if [ -x "${FILE}" ]; then
         ${ACTION} &
         APID=$!
-        sleep 5
-        ls /proc | grep '^'${APID}'$' || exit 1
-        
+        sleep 1
+       
         if [ -d "${FILE}" ]; then
             inotifywait -q -r -e close_write,modify,move,create,delete "${FILE}" &
         else
@@ -45,8 +52,8 @@ while true; do
         fi
         PID=$!
         wait $PID
-        ls /proc | grep '^'${APID}'$' && kill ${APID}
-        ls /proc | grep '^'${PID}'$' && kill ${PID}
+        ls /proc | grep '^'${APID}'$' && kill ${APID} && APID=
+        ls /proc | grep '^'${PID}'$' && kill ${PID} && PID=
         
     else
         break

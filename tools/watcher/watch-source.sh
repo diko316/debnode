@@ -41,18 +41,12 @@ fi
 # watch source
 ##########################
 # try first if it succeeds
-#if ! "${SYNC_ACTION}"; then
-#    echo "! There errors running sync action" >&2
-#    exit 1
-#fi
+if ! "${SYNC_ACTION}"; then
+    echo "*! There errors running sync action" >&2
+    exit 1
+fi
 
 echo "* Watching ${SOURCE}"
 setsid "${WATCHER}" "${SOURCE}" "${SYNC_ACTION}" > "${WATCHLOG}" 2>&1 < /dev/null &
 echo $! > ${PIDFILE}
-echo "* Waiting for files to be partially synced"
-echo "* Observing ${SOURCE} $!"
-while [ $(wc -L ${WATCHLOG} | cut -d' ' -f1) -lt 1 ]; do
-    echo "..."
-    sleep 1
-done
 
