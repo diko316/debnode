@@ -40,7 +40,8 @@ kill_inotify() {
 echo "** Running watcher..."
 
 while true; do
-    if [ -x "${FILE}" ]; then
+    
+    if [ -x "${ACTION}" ]; then
         ${ACTION} &
         APID=$!
         sleep 1
@@ -54,10 +55,11 @@ while true; do
         wait $PID
         ls /proc | grep '^'${APID}'$' && kill ${APID} && APID=
         ls /proc | grep '^'${PID}'$' && kill ${PID} && PID=
-        
     else
-        break
+        echo "!* ${ACTION} is not an executable file."
+        break;
     fi
+        
 done
 
 exit 0
