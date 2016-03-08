@@ -3,38 +3,42 @@
 #####################################
 FROM debian:latest
 
-ENV PROJECT_ROOT /opt/app
-ENV APP_TOOLS /opt/tools
-ENV LOG_FILES /opt/tool-logs
+ENV PROJECT_ROOT=/opt/app APP_TOOLS=/opt/tools LOG_FILES=/opt/tool-logs
 
 ENV APP_SOURCE /opt/app-source
 ENV APP_RUNNER $APP_TOOLS/watcher/sample-runner.sh
 ENV APP_OBSERVE $PROJECT_ROOT
 
-# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
-RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
-
 # Install requisites for installing Nodejs Argon Repo
-RUN apt-get update && apt-get install -y \
-                                        build-essential \
-                                        curl \
-                                        inotify-tools \
-                                        rsync && \
-    curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
+RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
+    apt-get update && \
+    apt-get install -y \
+        build-essential \
+        curl \
+        inotify-tools \
+        rsync && \
+    curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
     apt-get install -y nodejs git && \
-    rm -rf /var/lib/apt/lists/* && \
-    npm install npm@latest -g -dd
+    npm install npm@latest -g -dd && \
+    mkdir -p $APP_TOOLS && \
+    apt-get purge -y build-essential && \
+    apt-get autoremove -y && \
+    rm -rf /usr/include \
+            /usr/share/man \
+            /tmp/* \
+            /var/cache/apt/* \
+            /root/.npm \
+            /usr/lib/node_modules/npm/man \
+            /usr/lib/node_modules/npm/doc \
+            /usr/lib/node_modules/npm/html \
+            /var/lib/apt/lists/*
 
 # add tools
-RUN mkdir -p $APP_TOOLS
 ADD ./tools $APP_TOOLS
-RUN chmod +x -R $APP_TOOLS
-
-
-# log files
-RUN mkdir -p $LOG_FILES
-RUN mkdir -p $APP_SOURCE
-RUN mkdir -p $PROJECT_ROOT
+RUN chmod +x -R $APP_TOOLS && \
+    mkdir -p $LOG_FILES && \
+    mkdir -p $APP_SOURCE && \
+    mkdir -p $PROJECT_ROOT
 
 # run watcher daemon in background
 CMD $APP_TOOLS/watcher/start.sh
