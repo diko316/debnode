@@ -23,6 +23,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
     mkdir -p $APP_TOOLS && \
     apt-get purge -y build-essential && \
     apt-get autoremove -y && \
+    dpkg --purge $(dpkg -l | grep "^rc" | tr -s ' ' | cut -d ' ' -f 2) && \
     rm -rf /usr/include \
             /usr/share/man \
             /tmp/* \
