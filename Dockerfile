@@ -26,7 +26,7 @@ RUN chmod +x -R $APP_TOOLS && \
     apt-get install -y nodejs git && \
     npm install npm@latest -g -dd && \
     $APP_TOOLS/installer/uninstall.sh \
-        build-essential \
+        build-essential && \
     $APP_TOOLS/installer/cleanup.sh
 
 # Install requisites for installing Nodejs Argon Repo
