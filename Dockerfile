@@ -16,7 +16,7 @@ RUN chmod +x -R $APP_TOOLS && \
     mkdir -p $LOG_FILES && \
     mkdir -p $APP_SOURCE && \
     mkdir -p $PROJECT_ROOT && \
-    $APP_TOOLS/installer/install.sh \
+    "$APP_TOOLS/installer/install.sh" \
         build-essential \
         curl \
         git \
@@ -25,9 +25,9 @@ RUN chmod +x -R $APP_TOOLS && \
     curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
     apt-get install -y nodejs git && \
     npm install npm@latest -g -dd && \
-    $APP_TOOLS/installer/uninstall.sh \
+    "$APP_TOOLS/installer/uninstall.sh" \
         build-essential && \
-    $APP_TOOLS/installer/cleanup.sh
+    "$APP_TOOLS/installer/cleanup.sh"
 
 # Install requisites for installing Nodejs Argon Repo
 #RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
