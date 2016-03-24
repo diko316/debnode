@@ -18,6 +18,7 @@ RUN chmod +x -R $APP_TOOLS && \
     mkdir -p $LOG_FILES && \
     mkdir -p $APP_SOURCE && \
     mkdir -p $PROJECT_ROOT && \
+    mkdir -p /tmp && \
     "$APP_TOOLS/installer/install.sh" \
         build-essential \
         curl \
