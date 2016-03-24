@@ -14,3 +14,7 @@ rm -rf /usr/include \
         /usr/lib/node_modules/npm/html \
         /var/lib/apt/lists/*
 
+if [ -d "/root/.node-gyp" ]; then
+    rm -rf "/root/.node-gyp"
+fi
+
