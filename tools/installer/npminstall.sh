@@ -1,7 +1,7 @@
 #!/bin/sh
 
-NPM_GLOBAL_CMD="npm install -g"
-NPM_LOCAL_CMD="npm install"
+NPM_GLOBAL_CMD="npm install -y -g"
+NPM_LOCAL_CMD="npm install -y"
 APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
@@ -24,16 +24,16 @@ while [ $# -gt 0 ]; do
     else
         case "${MODE}" in
         GLOBAL)
-            NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} '${ARG}'"
+            NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} ${ARG}"
             INSTALL_GLOBAL=true
             ;;
         LOCAL)
-            NPM_LOCAL_CMD="${NPM_LOCAL_CMD} '${ARG}'"
+            NPM_LOCAL_CMD="${NPM_LOCAL_CMD} ${ARG}"
             INSTALL_LOCAL=true
             ;;
         APT)
-            APT_INSTALL="${APT_INSTALL_CMD} '${ARG}'"
-            APT_UNINSTALL="${APT_UNINSTALL_CMD} '${ARG}'"
+            APT_INSTALL="${APT_INSTALL_CMD} ${ARG}"
+            APT_UNINSTALL="${APT_UNINSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             ;;
         esac
