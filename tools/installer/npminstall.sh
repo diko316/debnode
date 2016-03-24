@@ -1,7 +1,7 @@
 #!/bin/sh
 
-NPM_GLOBAL_CMD="npm install -y -g"
-NPM_LOCAL_CMD="npm install -y"
+NPM_GLOBAL_CMD="npm install -dd -y -g"
+NPM_LOCAL_CMD="npm install -dd -y"
 APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
