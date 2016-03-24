@@ -15,36 +15,29 @@ while [ $# -gt 0 ]; do
     ARG=$1
     shift 1
     
-    case "${ARG}" in
-    "--global")
+    if [ "${ARG}" = "--global" ]; then
         MODE=GLOBAL
-        continue
-        ;;
-    "--local")
+    elif [ "${ARG}" = "--local" ]; then
         MODE=LOCAL
-        continue
-        ;;
-    "--apt")
+    elif [ "${ARG}" = "--apt" ]; then
         MODE=APT
-        continue
-        ;;
-    esac
-    
-    case "${MODE}" in
-    GLOBAL)
-        NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} '${ARG}'"
-        INSTALL_GLOBAL=true
-        ;;
-    LOCAL)
-        NPM_LOCAL_CMD="${NPM_LOCAL_CMD} '${ARG}'"
-        INSTALL_LOCAL=true
-        ;;
-    APT)
-        APT_INSTALL="${APT_INSTALL_CMD} '${ARG}'"
-        APT_UNINSTALL="${APT_UNINSTALL_CMD} '${ARG}'"
-        INSTALL_APT=true
-        ;;
-    esac
+    else
+        case "${MODE}" in
+        GLOBAL)
+            NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} '${ARG}'"
+            INSTALL_GLOBAL=true
+            ;;
+        LOCAL)
+            NPM_LOCAL_CMD="${NPM_LOCAL_CMD} '${ARG}'"
+            INSTALL_LOCAL=true
+            ;;
+        APT)
+            APT_INSTALL="${APT_INSTALL_CMD} '${ARG}'"
+            APT_UNINSTALL="${APT_UNINSTALL_CMD} '${ARG}'"
+            INSTALL_APT=true
+            ;;
+        esac
+    fi
 done
 
 
@@ -52,14 +45,18 @@ done
 # install apt
 ##################
 if [ "${INSTALL_APT}" ]; then
-    ${APT_INSTALL}
+    echo "installing: "
+    echo ${APT_INSTALL}
+    ${APT_INSTALL} || exit 1
 fi
 
 ##################
 # install global
 ##################
 if [ "${INSTALL_GLOBAL}" ]; then
-    ${NPM_GLOBAL_CMD}
+    echo "installing: "
+    echo ${NPM_GLOBAL_CMD}
+    ${NPM_GLOBAL_CMD} || exit 2
 fi
 
 ##################
@@ -68,7 +65,9 @@ fi
 if [ "${INSTALL_LOCAL}" ] && [ -d "${PROJECT_ROOT}" ] && [ -w "${PROJECT_ROOT}" ]; then
     CWD=$(pwd)
     cd "{PROJECT_ROOT}"
-    ${NPM_LOCAL_CMD}
+    echo "installing: "
+    echo ${NPM_LOCAL_CMD}
+    ${NPM_LOCAL_CMD} || exit 3
     cd "${CWD}"
 fi
 
@@ -76,11 +75,15 @@ fi
 # uninstall
 ##################
 if [ "${INSTALL_APT}" ]; then
-    ${APT_UNINSTALL}
+    echo "uninstalling: "
+    echo ${APT_UNINSTALL}
+    ${APT_UNINSTALL} || exit 4
 fi
 
 
 ##################
 # cleanup
 ##################
-${CLEANUP_CMD}
+echo "cleanup: "
+echo ${APT_UNINSTALL}
+${CLEANUP_CMD} || exit 5
