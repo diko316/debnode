@@ -21,6 +21,8 @@ while [ $# -gt 0 ]; do
         MODE=LOCAL
     elif [ "${ARG}" = "--apt" ]; then
         MODE=APT
+    elif [ "${ARG}" = "--apt-permanent" ]; then
+        MODE=APT_PERMANENT
     else
         case "${MODE}" in
         GLOBAL)
@@ -34,6 +36,10 @@ while [ $# -gt 0 ]; do
         APT)
             APT_INSTALL="${APT_INSTALL_CMD} ${ARG}"
             APT_UNINSTALL="${APT_UNINSTALL_CMD} ${ARG}"
+            INSTALL_APT=true
+            ;;
+        APT_PERMANENT)
+            APT_INSTALL="${APT_INSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             ;;
         esac
