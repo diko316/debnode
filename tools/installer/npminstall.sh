@@ -11,7 +11,7 @@ INSTALL_GLOBAL=
 INSTALL_LOCAL=
 MODE=LOCAL
 
-while [ $# -ge 0 ]; do
+while [ $# -gt 0 ]; do
     ARG=$1
     shift 1
     
