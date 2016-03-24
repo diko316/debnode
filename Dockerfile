@@ -14,8 +14,7 @@ RUN mkdir -p $APP_TOOLS
 ADD ./tools $APP_TOOLS
 
 # Install requisites for installing Nodejs
-RUN chmod +x -R $APP_TOOLS && \
-    mkdir -p $LOG_FILES && \
+RUN mkdir -p $LOG_FILES && \
     mkdir -p $APP_SOURCE && \
     mkdir -p $PROJECT_ROOT && \
     mkdir -p /tmp && \
