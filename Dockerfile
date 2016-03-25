@@ -23,7 +23,6 @@ RUN mkdir -p $LOG_FILES && \
     curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
     apt-get install -y nodejs && \
     npm install npm@latest -g -dd && \
-    npm install bower@latest -g -dd && \
     "$APP_TOOLS/installer/uninstall.sh" \
         build-essential && \
     "$APP_TOOLS/installer/cleanup.sh"
