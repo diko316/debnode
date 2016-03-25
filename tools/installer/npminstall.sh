@@ -6,6 +6,7 @@ APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
 PACKAGE_JSON="/tmp/package.json"
+BOWER_JSON="/tmp/bower.json"
 INSTALL_APT=
 UNINSTALL_APT=
 INSTALL_GLOBAL=
@@ -73,17 +74,30 @@ fi
 ##################
 if [ -d "${PROJECT_ROOT}" ]; then
     CWD=$(pwd)
+    PACKAGE_ROOT=$(dirname "${PACKAGE_JSON}")
     ##################
     # install packages
     #   from
     #   package.json
     ##################
     if [ -f "${PACKAGE_JSON}" ] && [ -r "${PACKAGE_JSON}" ]; then
-        PACKAGE_ROOT=$(dirname "${PACKAGE_JSON}")
         echo "installing package.json files: "
         cd "${PACKAGE_ROOT}"
         npm install -dd -y || exit 3
         cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
+        cd "${CWD}"
+    fi
+    
+    ##################
+    # install packages
+    #   from
+    #   bower.json
+    ##################
+    if [ -f "${BOWER_JSON}" ] && [ -r "${BOWER_JSON}" ]; then
+        echo "installing package.json files: "
+        cd "${PACKAGE_ROOT}"
+        bower install -V --config.interactive=false --allow-root || exit 4
+        cp -a "${PACKAGE_ROOT}/bower_components" "${PROJECT_ROOT}"
         cd "${CWD}"
     fi
     
@@ -94,7 +108,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cd "{PROJECT_ROOT}"
         echo "installing: "
         echo ${NPM_LOCAL_CMD}
-        ${NPM_LOCAL_CMD} || exit 4
+        ${NPM_LOCAL_CMD} || exit 5
         cd "${CWD}"
     fi
 fi
@@ -106,7 +120,7 @@ fi
 if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
     echo ${APT_UNINSTALL_CMD}
-    ${APT_UNINSTALL_CMD} || exit 5
+    ${APT_UNINSTALL_CMD} || exit 6
 fi
 
 
@@ -115,4 +129,4 @@ fi
 ##################
 echo "cleanup: "
 echo ${CLEANUP_CMD}
-${CLEANUP_CMD} || exit 6
+${CLEANUP_CMD} || exit 7
