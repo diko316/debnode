@@ -2,6 +2,7 @@
 
 NPM_GLOBAL_CMD="npm install -dd -y -g"
 NPM_LOCAL_CMD="npm install -dd -y"
+NPM_UNINSTALL_CMD="npm uninstall -dd -y -g"
 APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
@@ -10,6 +11,7 @@ BOWER_JSON="/tmp/bower.json"
 INSTALL_APT=
 UNINSTALL_APT=
 INSTALL_GLOBAL=
+UNINSTALL_GLOBAL=
 INSTALL_LOCAL=
 MODE=LOCAL
 
@@ -25,6 +27,8 @@ while [ $# -gt 0 ]; do
         MODE=APT
     elif [ "${ARG}" = "--apt-permanent" ]; then
         MODE=APT_PERMANENT
+    elif [ "${ARG}" = "--volatile" ]; then
+        MODE=VOLATILE
     else
         case "${MODE}" in
         GLOBAL)
@@ -34,6 +38,12 @@ while [ $# -gt 0 ]; do
         LOCAL)
             NPM_LOCAL_CMD="${NPM_LOCAL_CMD} ${ARG}"
             INSTALL_LOCAL=true
+            ;;
+        VOLATILE)
+            NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} ${ARG}"
+            NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} ${ARG}"
+            INSTALL_GLOBAL=true
+            UNINSTALL_GLOBAL=true
             ;;
         APT)
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
@@ -114,13 +124,19 @@ if [ -d "${PROJECT_ROOT}" ]; then
 fi
 
 
+if [ "${UNINSTALL_GLOBAL}" ]; then
+    echo "uninstalling volatile packages: "
+    echo ${NPM_UNINSTALL_CMD}
+    ${NPM_UNINSTALL_CMD} || exit 6
+fi
+
 ##################
 # uninstall
 ##################
 if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
     echo ${APT_UNINSTALL_CMD}
-    ${APT_UNINSTALL_CMD} || exit 6
+    ${APT_UNINSTALL_CMD} || exit 7
 fi
 
 
@@ -129,4 +145,4 @@ fi
 ##################
 echo "cleanup: "
 echo ${CLEANUP_CMD}
-${CLEANUP_CMD} || exit 7
+${CLEANUP_CMD} || exit 8
