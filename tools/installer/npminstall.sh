@@ -131,7 +131,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
     # install local
     ##################
     if [ "${INSTALL_LOCAL}" ]; then
-        cd "{PROJECT_ROOT}"
+        cd "${PROJECT_ROOT}"
         echo "installing: "
         echo ${NPM_LOCAL_CMD}
         ${NPM_LOCAL_CMD} || exit 7
