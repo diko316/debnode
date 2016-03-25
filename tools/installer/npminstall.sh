@@ -67,15 +67,35 @@ fi
 
 ##################
 # install local
+#   packages
 ##################
-if [ "${INSTALL_LOCAL}" ] && [ -d "${PROJECT_ROOT}" ] && [ -w "${PROJECT_ROOT}" ]; then
+if [ -d "${PROJECT_ROOT}" ]; then
     CWD=$(pwd)
-    cd "{PROJECT_ROOT}"
-    echo "installing: "
-    echo ${NPM_LOCAL_CMD}
-    ${NPM_LOCAL_CMD} || exit 3
-    cd "${CWD}"
+    ##################
+    # install packages
+    #   from
+    #   package.json
+    ##################
+    if [ -f "${PACKAGE_JSON}" ] && [ -r "${PACKAGE_JSON}" ]; then
+        PACKAGE_ROOT=$(dirname "${PACKAGE_JSON}")
+        cd "${PACKAGE_ROOT}"
+        npm install -dd -y || exit 3
+        cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
+        cd "${CWD}"
+    fi
+    
+    ##################
+    # install local
+    ##################
+    if [ "${INSTALL_LOCAL}" ]; then
+        cd "{PROJECT_ROOT}"
+        echo "installing: "
+        echo ${NPM_LOCAL_CMD}
+        ${NPM_LOCAL_CMD} || exit 3
+        cd "${CWD}"
+    fi
 fi
+
 
 ##################
 # uninstall
