@@ -7,6 +7,7 @@ APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
 PACKAGE_JSON="/tmp/package.json"
 INSTALL_APT=
+UNINSTALL_APT=
 INSTALL_GLOBAL=
 INSTALL_LOCAL=
 MODE=LOCAL
@@ -35,8 +36,9 @@ while [ $# -gt 0 ]; do
             ;;
         APT)
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
-            APT_UNINSTALL="${APT_UNINSTALL_CMD} ${ARG}"
+            APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} ${ARG}"
             INSTALL_APT=true
+            UNINSTALL_APT=true
             ;;
         APT_PERMANENT)
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
@@ -78,6 +80,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
     ##################
     if [ -f "${PACKAGE_JSON}" ] && [ -r "${PACKAGE_JSON}" ]; then
         PACKAGE_ROOT=$(dirname "${PACKAGE_JSON}")
+        echo "installing package.json files: "
         cd "${PACKAGE_ROOT}"
         npm install -dd -y || exit 3
         cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
@@ -91,7 +94,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cd "{PROJECT_ROOT}"
         echo "installing: "
         echo ${NPM_LOCAL_CMD}
-        ${NPM_LOCAL_CMD} || exit 3
+        ${NPM_LOCAL_CMD} || exit 4
         cd "${CWD}"
     fi
 fi
@@ -100,10 +103,10 @@ fi
 ##################
 # uninstall
 ##################
-if [ "${INSTALL_APT}" ]; then
+if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
-    echo ${APT_UNINSTALL}
-    ${APT_UNINSTALL} || exit 4
+    echo ${APT_UNINSTALL_CMD}
+    ${APT_UNINSTALL_CMD} || exit 5
 fi
 
 
@@ -111,5 +114,5 @@ fi
 # cleanup
 ##################
 echo "cleanup: "
-echo ${APT_UNINSTALL}
-${CLEANUP_CMD} || exit 5
+echo ${CLEANUP_CMD}
+${CLEANUP_CMD} || exit 6
