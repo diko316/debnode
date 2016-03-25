@@ -13,6 +13,7 @@ UNINSTALL_APT=
 INSTALL_GLOBAL=
 UNINSTALL_GLOBAL=
 INSTALL_LOCAL=
+HAS_NPM_INSTALL=
 MODE=LOCAL
 
 while [ $# -gt 0 ]; do
@@ -34,16 +35,19 @@ while [ $# -gt 0 ]; do
         GLOBAL)
             NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} ${ARG}"
             INSTALL_GLOBAL=true
+            HAS_NPM_INSTALL=true
             ;;
         LOCAL)
             NPM_LOCAL_CMD="${NPM_LOCAL_CMD} ${ARG}"
             INSTALL_LOCAL=true
+            HAS_NPM_INSTALL=true
             ;;
         VOLATILE)
             NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} ${ARG}"
             NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} ${ARG}"
             INSTALL_GLOBAL=true
             UNINSTALL_GLOBAL=true
+            HAS_NPM_INSTALL=true
             ;;
         APT)
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
@@ -58,6 +62,16 @@ while [ $# -gt 0 ]; do
         esac
     fi
 done
+
+##################
+# finalize installation
+##################
+if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ]; then
+    APT_INSTALL_CMD="${APT_INSTALL_CMD} build-essential"
+    APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential"
+    INSTALL_APT=true
+    UNINSTALL_APT=true
+fi
 
 
 ##################
