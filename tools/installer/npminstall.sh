@@ -34,12 +34,12 @@ while [ $# -gt 0 ]; do
             INSTALL_LOCAL=true
             ;;
         APT)
-            APT_INSTALL="${APT_INSTALL_CMD} ${ARG}"
+            APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
             APT_UNINSTALL="${APT_UNINSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             ;;
         APT_PERMANENT)
-            APT_INSTALL="${APT_INSTALL_CMD} ${ARG}"
+            APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             ;;
         esac
@@ -52,8 +52,8 @@ done
 ##################
 if [ "${INSTALL_APT}" ]; then
     echo "installing: "
-    echo ${APT_INSTALL}
-    ${APT_INSTALL} || exit 1
+    echo ${APT_INSTALL_CMD}
+    ${APT_INSTALL_CMD} || exit 1
 fi
 
 ##################
