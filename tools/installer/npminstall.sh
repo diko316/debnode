@@ -106,7 +106,9 @@ if [ -d "${PROJECT_ROOT}" ]; then
     if [ -f "${BOWER_JSON}" ] && [ -r "${BOWER_JSON}" ]; then
         echo "installing package.json files: "
         cd "${PACKAGE_ROOT}"
-        bower install -V --config.interactive=false --allow-root || exit 4
+        npm install bower -g -dd || exit 4
+        bower install -V --config.interactive=false --allow-root || exit 5
+        npm uninstall bower -g -dd || exit 6
         cp -a "${PACKAGE_ROOT}/bower_components" "${PROJECT_ROOT}"
         cd "${CWD}"
     fi
@@ -118,7 +120,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cd "{PROJECT_ROOT}"
         echo "installing: "
         echo ${NPM_LOCAL_CMD}
-        ${NPM_LOCAL_CMD} || exit 5
+        ${NPM_LOCAL_CMD} || exit 7
         cd "${CWD}"
     fi
 fi
@@ -127,7 +129,7 @@ fi
 if [ "${UNINSTALL_GLOBAL}" ]; then
     echo "uninstalling volatile packages: "
     echo ${NPM_UNINSTALL_CMD}
-    ${NPM_UNINSTALL_CMD} || exit 6
+    ${NPM_UNINSTALL_CMD} || exit 8
 fi
 
 ##################
@@ -136,7 +138,7 @@ fi
 if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
     echo ${APT_UNINSTALL_CMD}
-    ${APT_UNINSTALL_CMD} || exit 7
+    ${APT_UNINSTALL_CMD} || exit 9
 fi
 
 
@@ -145,4 +147,7 @@ fi
 ##################
 echo "cleanup: "
 echo ${CLEANUP_CMD}
-${CLEANUP_CMD} || exit 8
+${CLEANUP_CMD} || exit 10
+
+
+exit 0
