@@ -30,6 +30,8 @@ RUN mkdir -p $LOG_FILES && \
 # test webpack
 #RUN "$APP_TOOLS/autobuild.sh" webpack
 
+WORKDIR $PROJECT_ROOT
+
 # run watcher daemon in background
 CMD $APP_TOOLS/watcher/start.sh
 
