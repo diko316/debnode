@@ -18,3 +18,15 @@ if [ -d "/root/.node-gyp" ]; then
     rm -rf "/root/.node-gyp"
 fi
 
+if [ -d "/root/.cache" ]; then
+    rm -rf "/root/.cache"
+fi
+
+if [ -d "/root/.config" ]; then
+    rm -rf "/root/.config"
+fi
+
+if [ -d "/root/.local" ]; then
+    rm -rf "/root/.local"
+fi
+
