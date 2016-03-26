@@ -24,6 +24,7 @@ RUN mkdir -p $LOG_FILES && \
     apt-get install -y nodejs && \
     npm install npm@latest -g -dd && \
     "$APP_TOOLS/installer/uninstall.sh" \
+        curl \
         build-essential && \
     "$APP_TOOLS/installer/cleanup.sh"
 
