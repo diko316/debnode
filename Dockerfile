@@ -27,6 +27,9 @@ RUN mkdir -p $LOG_FILES && \
         build-essential && \
     "$APP_TOOLS/installer/cleanup.sh"
 
+# test webpack
+#RUN "$APP_TOOLS/autobuild.sh" webpack
+
 # run watcher daemon in background
 CMD $APP_TOOLS/watcher/start.sh
 
