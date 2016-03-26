@@ -112,9 +112,11 @@ fi
 ##################
 # cleanup
 ##################
-echo "cleanup: "
-echo ${CLEANUP_CMD}
-${CLEANUP_CMD} || exit 8
+if [ "${HAS_NPM_INSTALL}" ] || [ "${INSTALL_APT}" ]; then
+    echo "cleanup: "
+    echo ${CLEANUP_CMD}
+    ${CLEANUP_CMD} || exit 8
+fi
 
 
 exit 0
