@@ -13,7 +13,6 @@ rm -rf /usr/include \
         /usr/lib/node_modules/npm/doc \
         /usr/lib/node_modules/npm/html \
         /var/lib/apt/lists/* \
-        $(find /usr/lib/node_modules/npm -o -name .bin -type d) \
         $(find /usr/lib/node_modules -name test -o -type d)
 
 # cleanup $PROJECT_ROOT/node_modules
