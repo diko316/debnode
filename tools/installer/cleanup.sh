@@ -1,5 +1,7 @@
 #!/bin/sh
 
+apt-get clean
+apt-get autoclean
 apt-get autoremove -y
 
 dpkg --purge $(dpkg -l | grep "^rc" | tr -s ' ' | cut -d ' ' -f 2)

@@ -17,7 +17,6 @@ RUN mkdir -p $LOG_FILES && \
     "$APP_TOOLS/installer/install.sh" \
         build-essential \
         curl \
-        git \
         inotify-tools \
         rsync && \
     curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
