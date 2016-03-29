@@ -19,12 +19,16 @@ RUN mkdir -p $LOG_FILES && \
         curl \
         git \
         inotify-tools \
+        apt-transport-https \
+        lsb-release \
         rsync && \
     curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
     apt-get install -y nodejs && \
     npm install npm@latest -g -dd && \
     "$APP_TOOLS/installer/uninstall.sh" \
         curl \
+        apt-transport-https \
+        lsb-release \
         build-essential && \
     "$APP_TOOLS/installer/cleanup.sh"
 
