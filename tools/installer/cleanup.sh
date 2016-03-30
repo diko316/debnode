@@ -1,10 +1,10 @@
 #!/bin/sh
 
-apt-get clean
-apt-get autoclean
-apt-get autoremove -y
+apt-get clean || true
+apt-get autoclean || true
+apt-get autoremove -y || true
 
-dpkg --purge $(dpkg -l | grep "^rc" | tr -s ' ' | cut -d ' ' -f 2)
+dpkg --purge $(dpkg -l | grep "^rc" | tr -s ' ' | cut -d ' ' -f 2) || true
 
 rm -rf /usr/include \
         /usr/share/man \
