@@ -14,8 +14,8 @@ BOWER_JSON="/tmp/bower.json"
 # finalize installation
 ##################
 if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ]; then
-    APT_INSTALL_CMD="${APT_INSTALL_CMD} build-essential"
-    APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential"
+    APT_INSTALL_CMD="${APT_INSTALL_CMD} build-essential git"
+    APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential git"
     INSTALL_APT=true
     UNINSTALL_APT=true
 fi
@@ -66,7 +66,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
         cd "${CWD}"
     fi
-    
+
     ##################
     # install packages
     #   from
@@ -79,7 +79,7 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cp -a "${PACKAGE_ROOT}/bower_components" "${PROJECT_ROOT}"
         cd "${CWD}"
     fi
-    
+
     ##################
     # install local
     ##################
