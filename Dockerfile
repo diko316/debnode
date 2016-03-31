@@ -3,7 +3,7 @@
 #####################################
 FROM debian:latest
 
-ENV PROJECT_ROOT=/opt/app APP_TOOLS=/opt/tools LOG_FILES=/opt/tool-logs APP_SOURCE=/opt/app-source APP_RUNNER=$APP_TOOLS/watcher/sample-runner.sh APP_OBSERVE=$PROJECT_ROOT
+ENV NET_WAIT_TIMEOUT=60 PROJECT_ROOT=/opt/app APP_TOOLS=/opt/tools LOG_FILES=/opt/tool-logs APP_SOURCE=/opt/app-source APP_RUNNER=$APP_TOOLS/watcher/sample-runner.sh APP_OBSERVE=$PROJECT_ROOT
 
 # add tools
 RUN mkdir -p $APP_TOOLS
