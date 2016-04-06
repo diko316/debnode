@@ -125,7 +125,7 @@ if [ -x "${BUILDER_SCRIPT}" ]; then
     echo "Runing Custom Builder Script ${BUILDER_SCRIPT}..."
     ${BUILDER_SCRIPT} || exit 6
 else
-    echo "No Defined Custom Builder Script. Skipping custom build."
+    echo "No Defined Custom Builder Script (${BUILDER_SCRIPT}). Skipping custom build."
 fi
 
 
