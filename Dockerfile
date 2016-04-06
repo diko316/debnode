@@ -25,7 +25,9 @@ RUN mkdir -p $LOG_FILES && \
     "$APP_TOOLS/installer/uninstall.sh" \
         curl \
         build-essential && \
-    "$APP_TOOLS/installer/cleanup.sh"
+    "$APP_TOOLS/installer/cleanup.sh" && \
+    ln -s $APP_TOOLS/installer/autobuild/autobuild.sh /usr/local/bin/make-build && \
+    ln -s $APP_TOOLS/watcher/watch-source.sh /usr/local/bin/auto-sync && \
 
 # test webpack
 #RUN "$APP_TOOLS/autobuild.sh" webpack
@@ -34,5 +36,3 @@ WORKDIR $PROJECT_ROOT
 
 # run watcher daemon in background
 CMD $APP_TOOLS/watcher/start.sh
-
-

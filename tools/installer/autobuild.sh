@@ -1,13 +1,26 @@
 #!/bin/sh
 
 INSTALLER_PATH=$(dirname $(readlink -m $0))
+BUILDER_SCRIPT="${PROJECT_ROOT}/bin/build.sh"
 PACKAGE_JSON="/tmp/package.json"
+PACKAGE_JSON_DIRECT=
 BOWER_JSON="/tmp/bower.json"
+BOWER_JSON_DIRECT=
 
 ##################
 # process args
 ##################
 . "${INSTALLER_PATH}/process-install-args.sh" $*
+
+if [ ! -f "${PACKAGE_JSON}" ] && [ -f "${PROJECT_ROOT}/package.json" ]; then
+    PACKAGE_JSON="${PROJECT_ROOT}/package.json"
+    PACKAGE_JSON_DIRECT=true
+fi
+
+if [ ! -f "${BOWER_JSON}" ] && [ -f "${PROJECT_ROOT}/bower.json" ]; then
+    BOWER_JSON="${PROJECT_ROOT}/package.json"
+    BOWER_JSON_DIRECT=true
+fi
 
 
 ##################
@@ -63,8 +76,14 @@ if [ -d "${PROJECT_ROOT}" ]; then
         echo "installing package.json files: "
         cd "${PACKAGE_ROOT}"
         npm install -dd -y || exit 3
-        cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
         cd "${CWD}"
+
+        ## relocate if not direct install
+        if [ "${PACKAGE_JSON_DIRECT}" != "true" ]; then
+            cp -a "${PACKAGE_ROOT}/node_modules" "${PROJECT_ROOT}"
+        fi
+
+
     fi
 
     ##################
@@ -76,8 +95,13 @@ if [ -d "${PROJECT_ROOT}" ]; then
         echo "installing bower.json files: "
         cd "${PACKAGE_ROOT}"
         bower install -V --config.interactive=false --allow-root || exit 4
-        cp -a "${PACKAGE_ROOT}/bower_components" "${PROJECT_ROOT}"
         cd "${CWD}"
+
+        ## relocate if not direct install
+        if [ "${BOWER_JSON_DIRECT}" != "true" ]; then
+            cp -a "${PACKAGE_ROOT}/bower_components" "${PROJECT_ROOT}"
+        fi
+
     fi
 
     ##################
@@ -90,13 +114,22 @@ if [ -d "${PROJECT_ROOT}" ]; then
         ${NPM_LOCAL_CMD} || exit 5
         cd "${CWD}"
     fi
+
+
+    ##################
+    # build service
+    ##################
+    if [ -x "${BUILDER_SCRIPT}" ]; then
+        ${BUILDER_SCRIPT} || exit 6
+    fi
+
 fi
 
 
 if [ "${UNINSTALL_GLOBAL}" ]; then
     echo "uninstalling volatile packages: "
     echo ${NPM_UNINSTALL_CMD}
-    ${NPM_UNINSTALL_CMD} || exit 6
+    ${NPM_UNINSTALL_CMD} || exit 7
 fi
 
 ##################
@@ -105,7 +138,7 @@ fi
 if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
     echo ${APT_UNINSTALL_CMD}
-    ${APT_UNINSTALL_CMD} || exit 7
+    ${APT_UNINSTALL_CMD} || exit 8
 fi
 
 
@@ -115,7 +148,7 @@ fi
 if [ "${HAS_NPM_INSTALL}" ] || [ "${INSTALL_APT}" ]; then
     echo "cleanup: "
     echo ${CLEANUP_CMD}
-    ${CLEANUP_CMD} || exit 8
+    ${CLEANUP_CMD} || exit 9
 fi
 
 
