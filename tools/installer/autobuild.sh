@@ -115,14 +115,17 @@ if [ -d "${PROJECT_ROOT}" ]; then
         cd "${CWD}"
     fi
 
+fi
 
-    ##################
-    # build service
-    ##################
-    if [ -x "${BUILDER_SCRIPT}" ]; then
-        ${BUILDER_SCRIPT} || exit 6
-    fi
 
+##################
+# build service
+##################
+if [ -x "${BUILDER_SCRIPT}" ]; then
+    echo "Runing Custom Builder Script ${BUILDER_SCRIPT}..."
+    ${BUILDER_SCRIPT} || exit 6
+else
+    echo "No Defined Custom Builder Script. Skipping custom build."
 fi
 
 
