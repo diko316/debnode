@@ -27,7 +27,7 @@ RUN mkdir -p $LOG_FILES && \
         build-essential && \
     "$APP_TOOLS/installer/cleanup.sh" && \
     ln -s $APP_TOOLS/installer/autobuild/autobuild.sh /usr/local/bin/make-build && \
-    ln -s $APP_TOOLS/watcher/watch-source.sh /usr/local/bin/auto-sync && \
+    ln -s $APP_TOOLS/watcher/watch-source.sh /usr/local/bin/auto-sync
 
 # test webpack
 #RUN "$APP_TOOLS/autobuild.sh" webpack
