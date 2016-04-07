@@ -30,7 +30,7 @@ while [ $# -gt 0 ]; do
         MODE=APT_PERMANENT
     elif [ "${ARG}" = "--volatile" ]; then
         MODE=VOLATILE
-    elif [ "${ARG}" = "" ]; then
+    elif [ "${ARG}" = "--builder" ]; then
         MODE=CUSTOM_BUILDER
     else
         case "${MODE}" in
