@@ -2,8 +2,8 @@
 
 CURRENT_CWD=$(dirname $(readlink -m $0))
 BUILDER="${CURRENT_CWD}/autobuild/${1}.sh"
-PACKAGE_JSON="/tmp/package.json"
-BOWER_JSON="/tmp/bower.json"
+PACKAGE_JSON="${PROJECT_ROOT}/package.json"
+BOWER_JSON="${PROJECT_ROOT}/bower.json"
 
 # Call autobuild with preset
 if [ -f "${BUILDER}" ] && [ -x "${BUILDER}" ]; then

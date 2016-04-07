@@ -27,18 +27,33 @@ fi
 # finalize installation
 ##################
 if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ]; then
-    APT_INSTALL_CMD="${APT_INSTALL_CMD} build-essential git"
-    APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential git"
-    INSTALL_APT=true
-    UNINSTALL_APT=true
+    
+    # install/uninstall only if it has not yet been installed
+    if ! dpkg -s build-essential > /dev/null 2> /dev/null; then
+        APT_INSTALL_CMD="${APT_INSTALL_CMD} build-essential"
+        APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential"
+        INSTALL_APT=true
+        UNINSTALL_APT=true
+    fi
+    
+    # install/uninstall only if it has not yet been installed
+    if ! dpkg -s git > /dev/null 2> /dev/null; then
+        APT_INSTALL_CMD="${APT_INSTALL_CMD} git"
+        APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} git"
+        INSTALL_APT=true
+        UNINSTALL_APT=true
+    fi
 fi
 
 if [ -f "${BOWER_JSON}" ]; then
-    NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} bower"
-    NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} bower"
-    INSTALL_GLOBAL=true
-    UNINSTALL_GLOBAL=true
-    HAS_NPM_INSTALL=true
+    # install/uninstall only if it has not yet been installed
+    if ! npm list -g --depth 0 | grep bower > /dev/null 2> /dev/null; then
+        NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} bower"
+        NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} bower"
+        INSTALL_GLOBAL=true
+        UNINSTALL_GLOBAL=true
+        HAS_NPM_INSTALL=true
+    fi
 fi
 
 
@@ -117,6 +132,12 @@ if [ -d "${PROJECT_ROOT}" ]; then
 
 fi
 
+##################
+# custom builder
+##################
+if [ "${HAS_BUILD_SCRIPTS}" ]; then
+    eval ${CUSTOM_BUILD_SCRIPTS_CMD}
+fi
 
 ##################
 # build service
@@ -142,13 +163,11 @@ if [ "${UNINSTALL_APT}" ]; then
     echo "uninstalling: "
     echo ${APT_UNINSTALL_CMD}
     ${APT_UNINSTALL_CMD} || exit 8
-fi
-
 
 ##################
 # cleanup
 ##################
-if [ "${HAS_NPM_INSTALL}" ] || [ "${INSTALL_APT}" ]; then
+elif [ "${HAS_NPM_INSTALL}" ] || [ "${INSTALL_APT}" ]; then
     echo "cleanup: "
     echo ${CLEANUP_CMD}
     ${CLEANUP_CMD} || exit 9

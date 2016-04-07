@@ -6,12 +6,14 @@ NPM_UNINSTALL_CMD="npm uninstall -dd -y -g"
 APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
+CUSTOM_BUILD_SCRIPTS_CMD="true"
 INSTALL_APT=
 UNINSTALL_APT=
 INSTALL_GLOBAL=
 UNINSTALL_GLOBAL=
 INSTALL_LOCAL=
 HAS_NPM_INSTALL=
+HAS_BUILD_SCRIPTS=
 MODE=LOCAL
 
 while [ $# -gt 0 ]; do
@@ -28,6 +30,8 @@ while [ $# -gt 0 ]; do
         MODE=APT_PERMANENT
     elif [ "${ARG}" = "--volatile" ]; then
         MODE=VOLATILE
+    elif [ "${ARG}" = "" ]; then
+        MODE=CUSTOM_BUILDER
     else
         case "${MODE}" in
         GLOBAL)
@@ -57,6 +61,10 @@ while [ $# -gt 0 ]; do
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             ;;
+        CUSTOM_BUILDER)
+            CUSTOM_BUILD_SCRIPTS_CMD="${BUILD_SCRIPTS_CMD} && ${ARG}"
+            HAS_BUILD_SCRIPTS=true
+            ;;
         esac
     fi
 done
@@ -68,6 +76,8 @@ export NPM_LOCAL_CMD
 export NPM_UNINSTALL_CMD
 export APT_INSTALL_CMD
 export APT_UNINSTALL_CMD
+export CUSTOM_BUILD_SCRIPTS_CMD
+export HAS_BUILD_SCRIPTS
 export CLEANUP_CMD
 export INSTALL_APT
 export UNINSTALL_APT

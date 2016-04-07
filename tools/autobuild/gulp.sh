@@ -1,7 +1,7 @@
 #!/bin/sh
 
-"${APP_TOOLS}/installer/autobuild.sh" \
-        --global \
-            gulp \
-            browser-sync
+auto-build \
+    --global \
+        gulp \
+        browser-sync
 
