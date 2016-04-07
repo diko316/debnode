@@ -26,7 +26,7 @@ fi
 ##################
 # finalize installation
 ##################
-if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ] || [ "$HAS_BUILD_SCRIPTS}" ]; then
+if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ] || [ "${HAS_BUILD_SCRIPTS}" ]; then
     
     # install/uninstall only if it has not yet been installed
     if ! dpkg -s build-essential > /dev/null 2> /dev/null; then
@@ -46,15 +46,13 @@ if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" 
     fi
 fi
 
-if [ -f "${BOWER_JSON}" ]; then
+if [ -f "${BOWER_JSON}" ] && ! npm list -g --depth 0 | grep bower > /dev/null 2> /dev/null; then
     # install/uninstall only if it has not yet been installed
-    if ! npm list -g --depth 0 | grep bower > /dev/null 2> /dev/null; then
-        NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} bower"
-        NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} bower"
-        INSTALL_GLOBAL=true
-        UNINSTALL_GLOBAL=true
-        HAS_NPM_INSTALL=true
-    fi
+    NPM_GLOBAL_CMD="${NPM_GLOBAL_CMD} bower"
+    NPM_UNINSTALL_CMD="${NPM_UNINSTALL_CMD} bower"
+    INSTALL_GLOBAL=true
+    UNINSTALL_GLOBAL=true
+    HAS_NPM_INSTALL=true
 fi
 
 
