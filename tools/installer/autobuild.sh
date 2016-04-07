@@ -135,7 +135,12 @@ fi
 # custom builder
 ##################
 if [ "${HAS_BUILD_SCRIPTS}" ]; then
-    eval ${CUSTOM_BUILD_SCRIPTS_CMD}
+    echo "Calling custom build scripts"
+    while read -r CUSTOM_CMD; do
+        ${CUSTOM_CMD} || exit 2
+    done <<EOT
+$(echo "${CUSTOM_BUILD_SCRIPTS_CMD}")
+EOT
 fi
 
 ##################

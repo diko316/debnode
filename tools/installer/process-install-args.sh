@@ -6,7 +6,7 @@ NPM_UNINSTALL_CMD="npm uninstall -dd -y -g"
 APT_INSTALL_CMD="${APP_TOOLS}/installer/install.sh"
 APT_UNINSTALL_CMD="${APP_TOOLS}/installer/uninstall.sh"
 CLEANUP_CMD="${APP_TOOLS}/installer/cleanup.sh"
-CUSTOM_BUILD_SCRIPTS_CMD="true"
+CUSTOM_BUILD_SCRIPTS_CMD=
 INSTALL_APT=
 UNINSTALL_APT=
 INSTALL_GLOBAL=
@@ -65,7 +65,11 @@ while [ $# -gt 0 ]; do
             HAS_APT_INSTALL=true
             ;;
         CUSTOM_BUILDER)
-            CUSTOM_BUILD_SCRIPTS_CMD="${BUILD_SCRIPTS_CMD} && ${ARG}"
+            if [ "${CUSTOM_BUILD_SCRIPTS_CMD}" ]; then
+                CUSTOM_BUILD_SCRIPTS_CMD="${CUSTOM_BUILD_SCRIPTS_CMD}"'\n'"${ARG}"
+            else
+                CUSTOM_BUILD_SCRIPTS_CMD="${ARG}"
+            fi
             HAS_BUILD_SCRIPTS=true
             ;;
         esac

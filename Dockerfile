@@ -7,7 +7,7 @@ ENV NET_WAIT_TIMEOUT=60 PROJECT_ROOT=/opt/app APP_TOOLS=/opt/tools LOG_FILES=/op
 
 # add tools
 RUN mkdir -p $APP_TOOLS
-ADD ./tools $APP_TOOLS
+COPY ./tools $APP_TOOLS
 
 # Install requisites for installing Nodejs
 RUN mkdir -p $LOG_FILES && \
