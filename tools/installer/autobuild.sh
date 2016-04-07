@@ -26,7 +26,7 @@ fi
 ##################
 # finalize installation
 ##################
-if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ]; then
+if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" ] || [ "$HAS_BUILD_SCRIPTS}" ]; then
     
     # install/uninstall only if it has not yet been installed
     if ! dpkg -s build-essential > /dev/null 2> /dev/null; then
@@ -34,6 +34,7 @@ if [ -f "${BOWER_JSON}" ] || [ -f "${PACKAGE_JSON}" ] || [ "${HAS_NPM_INSTALL}" 
         APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} build-essential"
         INSTALL_APT=true
         UNINSTALL_APT=true
+        
     fi
     
     # install/uninstall only if it has not yet been installed

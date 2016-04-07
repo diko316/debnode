@@ -14,6 +14,7 @@ UNINSTALL_GLOBAL=
 INSTALL_LOCAL=
 HAS_NPM_INSTALL=
 HAS_BUILD_SCRIPTS=
+HAS_APT_INSTALL=
 MODE=LOCAL
 
 while [ $# -gt 0 ]; do
@@ -56,10 +57,12 @@ while [ $# -gt 0 ]; do
             APT_UNINSTALL_CMD="${APT_UNINSTALL_CMD} ${ARG}"
             INSTALL_APT=true
             UNINSTALL_APT=true
+            HAS_APT_INSTALL=true
             ;;
         APT_PERMANENT)
             APT_INSTALL_CMD="${APT_INSTALL_CMD} ${ARG}"
             INSTALL_APT=true
+            HAS_APT_INSTALL=true
             ;;
         CUSTOM_BUILDER)
             CUSTOM_BUILD_SCRIPTS_CMD="${BUILD_SCRIPTS_CMD} && ${ARG}"
@@ -77,7 +80,6 @@ export NPM_UNINSTALL_CMD
 export APT_INSTALL_CMD
 export APT_UNINSTALL_CMD
 export CUSTOM_BUILD_SCRIPTS_CMD
-export HAS_BUILD_SCRIPTS
 export CLEANUP_CMD
 export INSTALL_APT
 export UNINSTALL_APT
@@ -85,5 +87,7 @@ export INSTALL_GLOBAL
 export UNINSTALL_GLOBAL
 export INSTALL_LOCAL
 export HAS_NPM_INSTALL
+export HAS_APT_INSTALL
+export HAS_BUILD_SCRIPTS
 export MODE
 
