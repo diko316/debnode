@@ -19,7 +19,7 @@ RUN mkdir -p $LOG_FILES && \
         curl \
         inotify-tools \
         rsync && \
-    curl -sL https://deb.nodesource.com/setup_5.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -y nodejs && \
     npm install npm@latest -g -dd && \
     "$APP_TOOLS/installer/uninstall.sh" \
